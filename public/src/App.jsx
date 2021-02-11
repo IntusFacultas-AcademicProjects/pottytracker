@@ -6,17 +6,20 @@ import {
   Route,
 } from 'react-router-dom';
 import FormView from './views/FormView';
+import { ToastManager } from './components/ToastManager';
 import PageLayout from './components/PageLayout';
 
 function App() {
   return (
     <Router>
       <PageLayout>
-        <Switch>
-          <Route path="/">
-            <FormView />
-          </Route>
-        </Switch>
+        <ToastManager>
+          <Switch>
+            <Route path="/">
+              <FormView />
+            </Route>
+          </Switch>
+        </ToastManager>
       </PageLayout>
     </Router>
   );

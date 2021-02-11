@@ -1,4 +1,5 @@
-import { React, useEffect, useState } from 'react';
+import { useState } from 'react';
+import * as React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faTint, faPoop, faBed, faSun,
@@ -6,7 +7,7 @@ import {
 import { PottyForm } from '../components/PottyForm';
 import { CheckboxButton } from '../components/CheckboxButton';
 import { PrimaryButton } from '../components/PrimaryButton';
-import { ToastAlert } from '../components/ToastAlert';
+import { ToastContext } from '../components/ToastManager';
 import { API } from '../hooks';
 
 export const FormView = () => {
@@ -15,26 +16,11 @@ export const FormView = () => {
   const [accident, onAccident] = useState(false);
   const [sleep, onNapStarted] = useState(false);
   const [awoke, onNapEnded] = useState(false);
-  const [responseStatus, onResponse] = useState(null);
-  let alert = null;
-  useEffect(() => {
-    console.log('fired');
-    if (responseStatus === true) {
-      alert = (
-        <ToastAlert flavor="success">
-          Submitted successfully.
-        </ToastAlert>
-      );
-    } else if (responseStatus === false) {
-      alert = (
-        <ToastAlert flavor="error">
-          Error during submission.
-        </ToastAlert>
-      );
-    } else {
-      alert = null;
-    }
-  }, []);
+
+  const { toast } = React.useContext(ToastContext);
+  // const [responseStatus, setResponseStatus] = useState(null);
+  // const [showAlert, setShowAlert] = useState(false);
+
   const submit = (e) => {
     const postData = {
       pee: pee ? 'Y' : 'N',
@@ -46,16 +32,19 @@ export const FormView = () => {
     };
     e.preventDefault();
     API.submit(postData).then(() => {
-      console.log('fired in async');
       onPee(false);
       onPoop(false);
       onAccident(false);
       onNapStarted(false);
       onNapEnded(false);
-      onResponse(true);
+      toast('Submitted successfully', 'success');
+      // setShowAlert(true);
+      // setResponseStatus(true);
     }).catch(() => {
-      console.log('fired in catch');
-      onResponse(false);
+      console.log('catch');
+      toast('Submission failed. Server error.', 'error');
+      // setResponseStatus(false);
+      // setShowAlert(true);
     });
   };
 
@@ -103,7 +92,6 @@ export const FormView = () => {
         <FontAwesomeIcon icon={faSun} />
       </CheckboxButton>
       <PrimaryButton role="button" onClick={submit}>Submit</PrimaryButton>
-      {alert}
     </PottyForm>
   );
 };

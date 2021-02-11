@@ -21,7 +21,7 @@ const bindCSS = (flavor) => {
 const StyledToast = styled.div`
   @keyframes styledtoast {
     0% {
-      transform: translateY(100px)
+      transform: translateY(20px)
     }
     100% {
       transform: translateY(0px)
@@ -55,6 +55,7 @@ const StyledToast = styled.div`
   }
   & div.toast__cancel {
     display: flex;
+    padding: .25em .5em;
     & path {
       fill: #54457F;
     }

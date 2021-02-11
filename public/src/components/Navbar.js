@@ -5,6 +5,7 @@ export const Navbar = styled.nav`
     padding: .25em 1em;
     display: flex;
     align-items: center;
+    
 `;
 export const NavbarItemList = styled.ul`
     list-style: none;
@@ -22,6 +23,13 @@ export const NavbarBrand = styled(Link)`
     align-items: center;
     color: palevioletred;
     font-size: 24px;
+    .navbar__brand__icon {
+        height: 30px;
+        margin-right: .25em;
+        & path  {
+            fill: palevioletred
+        }
+    }
     &:hover {
         color: palevioletred;
         text-decoration: none;

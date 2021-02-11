@@ -8,6 +8,7 @@ import { Navbar, NavbarBrand } from './Navbar';
 const PageSkeleton = styled.div`
     display: flex;
     flex-direction: column;
+    font-family: sans-serif;
 `;
 
 const MainContent = styled.div`

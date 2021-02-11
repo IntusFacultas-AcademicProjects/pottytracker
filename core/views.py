@@ -26,4 +26,3 @@ class RecordViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(data={"message": "success"}, status=status.HTTP_200_OK)
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        print(serializer.errors)
