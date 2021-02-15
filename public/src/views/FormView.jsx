@@ -43,9 +43,9 @@ export const FormView = () => {
       onAccident(false);
       onNapStarted(false);
       onNapEnded(false);
-      toast('Submitted successfully', 'success');
+      toast('Submitted successfully', flavors.success);
     } catch (error) {
-      toast('Submission failed. Server error.', 'error');
+      toast('Submission failed. Server error.', flavors.error);
     }
   };
 
