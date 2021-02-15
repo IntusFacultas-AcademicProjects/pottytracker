@@ -1,6 +1,6 @@
 import { React } from 'react';
 import { PropTypes } from 'prop-types';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const StyledLabel = styled.label`
   background-color: white;
@@ -30,6 +30,7 @@ const StyledLabel = styled.label`
   position: relative;
   border-radius: .25em;
   cursor: pointer;
+ 
 
   & input {
     -webkit-appearance: none;
@@ -54,38 +55,38 @@ const StyledLabel = styled.label`
     box-shadow: 0px 0px 2px 2px rgba(219, 112, 147, 0.7);
   }
 
-  ${(props) => (props.checked ? `
-    background-color: palevioletred;
-    color: white;
-    & path {
-      fill: white;
-    }
-  ` : '')}
-  ${(props) => (props.disabled ? 'opacity: .6;' : '')}
+  ${({ checked, disabled }) => css`
+    ${checked ? css`
+      background-color: palevioletred;
+      color: white;
+      & path {
+        fill: white;
+      }
+    ` : ''}
+    ${disabled ? css`
+      opacity: .6;
+    ` : ''}
+  `}
 `;
 
-export const CheckboxButton = (props) => {
-  const {
-    checked, children, name, onChange, disabled,
-  } = props;
-  return (
-    <StyledLabel htmlFor={name} checked={checked} disabled={disabled}>
-      {children}
-      <input disabled={disabled} onChange={onChange} type="checkbox" id={name} name={name} />
-    </StyledLabel>
-  );
-};
+export const CheckboxButton = ({
+  checked, children, name, onChange, disabled,
+}) => (
+  <StyledLabel htmlFor={name} checked={checked} disabled={disabled}>
+    {children}
+    <input disabled={disabled} onChange={onChange} type="checkbox" id={name} name={name} />
+  </StyledLabel>
+);
 
 CheckboxButton.propTypes = {
   checked: PropTypes.bool.isRequired,
   name: PropTypes.string.isRequired,
-  children: PropTypes.node,
+  children: PropTypes.node.isRequired,
   onChange: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
 };
 
 CheckboxButton.defaultProps = {
-  children: null,
   disabled: false,
 };
 export default CheckboxButton;

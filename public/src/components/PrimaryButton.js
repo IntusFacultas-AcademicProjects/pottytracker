@@ -4,8 +4,7 @@ export const PrimaryButton = styled.button`
   padding: .25em 1em;
   border-radius: .25em;
   border: 2px solid #586994;
-  width: 250px;
-  height: 40px;
+  width: 100%;
   vertical-align: middle;
   font-weight: bold;
   font-size: 1em;

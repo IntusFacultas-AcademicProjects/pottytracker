@@ -2,8 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faToilet } from '@fortawesome/free-solid-svg-icons';
-import { Navbar, NavbarBrand } from './Navbar';
+import { faToilet, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import {
+  Navbar, NavbarBrand,
+  NavbarItemList,
+  NavbarItem,
+  NavbarLink,
+} from './Navbar';
 
 const PageSkeleton = styled.div`
     display: flex;
@@ -15,26 +20,30 @@ const MainContent = styled.div`
     flex: 1;
 `;
 
-export const PageLayout = (props) => {
-  const { children } = props;
-  return (
-    <PageSkeleton>
-      <Navbar className="navbar">
-        <NavbarBrand to="/">
-          <FontAwesomeIcon className="navbar__brand__icon" icon={faToilet} size="lg" />
-          Potty Tracker
-        </NavbarBrand>
-      </Navbar>
-      <MainContent>
-        {children}
-      </MainContent>
-    </PageSkeleton>
-  );
-};
+export const PageLayout = ({ children }) => (
+  <PageSkeleton>
+    <Navbar className="navbar">
+      <NavbarBrand to="/">
+        <FontAwesomeIcon className="navbar__brand__icon" icon={faToilet} size="lg" />
+        Potty Tracker
+      </NavbarBrand>
+      <NavbarItemList>
+        <NavbarItem>
+          <NavbarLink to="/calendar">
+            <FontAwesomeIcon icon={faCalendarAlt} size="sm" />
+            <span>
+              Calendar
+            </span>
+          </NavbarLink>
+        </NavbarItem>
+      </NavbarItemList>
+    </Navbar>
+    <MainContent>
+      {children}
+    </MainContent>
+  </PageSkeleton>
+);
 PageLayout.propTypes = {
-  children: PropTypes.element,
-};
-PageLayout.defaultProps = {
-  children: '',
+  children: PropTypes.node.isRequired,
 };
 export default PageLayout;

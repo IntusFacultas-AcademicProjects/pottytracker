@@ -9,20 +9,18 @@ import FormView from './views/FormView';
 import { ToastManager } from './components/ToastManager';
 import PageLayout from './components/PageLayout';
 
-function App() {
-  return (
-    <Router>
-      <PageLayout>
-        <ToastManager>
-          <Switch>
-            <Route path="/">
-              <FormView />
-            </Route>
-          </Switch>
-        </ToastManager>
-      </PageLayout>
-    </Router>
-  );
-}
+const App = () => (
+  <Router>
+    <PageLayout>
+      <ToastManager>
+        <Switch>
+          <Route path="/">
+            <FormView />
+          </Route>
+        </Switch>
+      </ToastManager>
+    </PageLayout>
+  </Router>
+);
 
 export default App;
