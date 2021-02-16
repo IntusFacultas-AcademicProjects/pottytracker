@@ -1,7 +1,7 @@
-import { useState, useRef } from 'react';
-import * as React from 'react';
+import React, { useState, useRef, useContext } from 'react';
+// import * as React from 'react';
 import { PropTypes } from 'prop-types';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCheckCircle, faExclamationTriangle, faTimes,
@@ -29,6 +29,31 @@ const ToastRack = styled.div`
   padding: 1em;
 `;
 
+const StyledToastBanner = styled.div`
+  margin-left: -1px;
+    border-radius: .25em 0 0 .25em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    & path {
+      fill: white;
+    }
+    padding: .25em .5em;
+    ${(props) => getCSSForFlavor(props.flavor)}
+`;
+const StyledToastContent = styled.div`
+  padding: .5em 1em;
+    flex: 1;
+`;
+const StyledToastCancel = styled.div`
+  display: flex;
+    padding: .25em .5em;
+    & path {
+      fill: #54457F;
+    }
+    align-items: center;
+`;
 const StyledToast = styled.div`
   @keyframes styledtoast {
     0% {
@@ -70,39 +95,13 @@ const StyledToast = styled.div`
   & + & {
     margin-top: 1em;
   }
-
-  & .toast__alert {
-    margin-left: -1px;
-    border-radius: .25em 0 0 .25em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 25px;
-    & path {
-      fill: white;
-    }
-    padding: .25em .5em;
-    ${(props) => getCSSForFlavor(props.flavor)}
-  }
-  & .toast__content {
-    padding: .5em 1em;
-    flex: 1;
-  }
-  &.toast--cancelled {
-    animation: immediatecancel .35s ease-out;
-  }
-  & .toast__cancel {
-    display: flex;
-    padding: .25em .5em;
-    & path {
-      fill: #54457F;
-    }
-    align-items: center;
-  }
+  ${({ cancel }) => css`
+    ${cancel ? css`animation: immediatecancel .35s ease-out;` : ''}
+  `}
 `;
 
 export const ToastAlert = ({ children, flavor, id }) => {
-  const { manuallyCancel, flavors } = React.useContext(ToastContext);
+  const { manuallyCancel, flavors } = useContext(ToastContext);
   const internalFlavors = {
     [flavors.success]: <FontAwesomeIcon icon={faCheckCircle} />,
     [flavor.error]: <FontAwesomeIcon icon={faExclamationTriangle} />,
@@ -115,20 +114,19 @@ export const ToastAlert = ({ children, flavor, id }) => {
   };
   return (
     <StyledToast
-      flavor={flavor}
       ariaLive="polite"
-      className={cancel ? 'toast--cancelled' : ''}
+      cancel={cancel}
       onClick={handleClick}
     >
-      <div className="toast__alert">
+      <StyledToastBanner flavor={flavor}>
         {alertIcon}
-      </div>
-      <div className="toast__content">
+      </StyledToastBanner>
+      <StyledToastContent>
         {children}
-      </div>
-      <div className="toast__cancel">
+      </StyledToastContent>
+      <StyledToastCancel>
         <FontAwesomeIcon icon={faTimes} />
-      </div>
+      </StyledToastCancel>
     </StyledToast>
   );
 };
@@ -157,7 +155,7 @@ export const ToastManager = ({ children, defaultTime }) => {
 
       setAvailableToastId(availableToastId + 1);
       setTimeout(() => {
-        toasts.current.splice(0, 1); // toasts.filter((toast) => toast.id !== usedId);
+        toasts.current.splice(0, 1);
         setForceRerender(toasts.current.length);
       }, time ?? defaultTime);
     },

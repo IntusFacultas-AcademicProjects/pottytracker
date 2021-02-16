@@ -21,7 +21,7 @@ export const NavbarItem = styled.li`
     align-items: center;
 
 `;
-export const StyledIcon = styled(FontAwesomeIcon);
+export const StyledIcon = styled(FontAwesomeIcon)``;
 export const NavbarLink = styled(Link)`
     text-decoration: none;
     display: flex;

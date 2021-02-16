@@ -31,9 +31,7 @@ export const PageLayout = ({ children }) => (
         <NavbarItem>
           <NavbarLink to="/calendar">
             <FontAwesomeIcon icon={faCalendarAlt} size="sm" />
-            <span>
-              Calendar
-            </span>
+            Calendar
           </NavbarLink>
         </NavbarItem>
       </NavbarItemList>
