@@ -21,10 +21,6 @@ export const FormView = () => {
   // const [responseStatus, setResponseStatus] = useState(null);
   // const [showAlert, setShowAlert] = useState(false);
 
-  const testToast = (e) => {
-    e.preventDefault();
-    toast(`test ${new Date().toISOString()}`, 'success');
-  };
   const submit = async (e) => {
     e.preventDefault();
     const postData = {
@@ -83,7 +79,6 @@ export const FormView = () => {
         <FontAwesomeIcon icon={faSun} />
       </CheckboxButton>
       <PrimaryButton role="button" onClick={submit}>Submit</PrimaryButton>
-      <PrimaryButton role="button" onClick={testToast}>Toast</PrimaryButton>
     </PottyForm>
   );
 };

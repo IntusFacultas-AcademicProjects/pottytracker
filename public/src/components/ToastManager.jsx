@@ -1,4 +1,6 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, {
+  useState, useRef, useContext, useCallback, useMemo,
+} from 'react';
 // import * as React from 'react';
 import { PropTypes } from 'prop-types';
 import styled, { css } from 'styled-components';
@@ -9,10 +11,10 @@ import {
 
 const getCSSForFlavor = (flavor) => {
   const flavors = {
-    success: `
+    success: css`
       background-color: #386C0B;
     `,
-    error: `
+    error: css`
       background-color: #EF6F6C;
     `,
   };
@@ -24,35 +26,37 @@ const ToastRack = styled.div`
   z-index: 1;
   position: fixed;
   right: 0;
-  width: 250px;
+  ${({ theme }) => css`
+    width: ${theme.toast.width};
+  `}
   bottom: 0;
   padding: 1em;
 `;
 
 const StyledToastBanner = styled.div`
   margin-left: -1px;
-    border-radius: .25em 0 0 .25em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 25px;
-    & path {
-      fill: white;
-    }
-    padding: .25em .5em;
-    ${(props) => getCSSForFlavor(props.flavor)}
+  border-radius: .25em 0 0 .25em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  & path {
+    fill: white;
+  }
+  padding: .25em .5em;
+  ${(props) => getCSSForFlavor(props.flavor)}
 `;
 const StyledToastContent = styled.div`
   padding: .5em 1em;
-    flex: 1;
+  flex: 1;
 `;
 const StyledToastCancel = styled.div`
   display: flex;
-    padding: .25em .5em;
-    & path {
-      fill: #54457F;
-    }
-    align-items: center;
+  padding: .25em .5em;
+  & path {
+    fill: #54457F;
+  }
+  align-items: center;
 `;
 const StyledToast = styled.div`
   @keyframes styledtoast {
@@ -64,28 +68,27 @@ const StyledToast = styled.div`
     }
   }
   @keyframes cancelled {
-  0% {
-    transform: translateX(0px);
+    0% {
+      transform: translateX(0px);
+    }
+    90% {
+      transform: translateX(0px);
+    }
+    100% {
+      transform: translateX(300px);
+    }
   }
-  90% {
-    transform: translateX(0px);
+    @keyframes immediatecancel {
+    0% {
+      transform: translateX(0px);
+    }
+    100% {
+      transform: translateX(300px);
+    }
   }
-  100% {
-    transform: translateX(300px);
-  }
-}
-  @keyframes immediatecancel {
-  0% {
-    transform: translateX(0px);
-  }
-  100% {
-    transform: translateX(300px);
-  }
-}
-
   display: flex;
   border: 1px solid #54457F;
-  width: 250px;
+  width: 100%;
   cursor: pointer;
   animation: styledtoast .3s ease-out, cancelled 4.5s ease-out .3s;
   animation-fill-mode: forwards;  
@@ -102,11 +105,10 @@ const StyledToast = styled.div`
 
 export const ToastAlert = ({ children, flavor, id }) => {
   const { manuallyCancel, flavors } = useContext(ToastContext);
-  const internalFlavors = {
+  const internalFlavors = useMemo(() => ({
     [flavors.success]: <FontAwesomeIcon icon={faCheckCircle} />,
-    [flavor.error]: <FontAwesomeIcon icon={faExclamationTriangle} />,
-  };
-  const alertIcon = internalFlavors[flavor];
+    [flavors.error]: <FontAwesomeIcon icon={faExclamationTriangle} />,
+  }), [flavors]);
   const [cancel, setCancel] = useState(false);
   const handleClick = () => {
     setCancel(true);
@@ -119,7 +121,7 @@ export const ToastAlert = ({ children, flavor, id }) => {
       onClick={handleClick}
     >
       <StyledToastBanner flavor={flavor}>
-        {alertIcon}
+        {internalFlavors[flavor]}
       </StyledToastBanner>
       <StyledToastContent>
         {children}

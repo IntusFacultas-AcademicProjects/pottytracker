@@ -9,8 +9,9 @@ export const API = {
   // eslint-disable-next-line no-undef
   configureUrl: (url) => `${SERVER_CONFIGURATION.baseUrl}${url}`,
   post: (url, data) => fetch(url, data),
-  submit(data) {
-    return this.post(this.configureUrl('records/'), data);
+  submit: async (data) => {
+    const response = await this.post(this.configureUrl('records/'), data);
+    return response.json();
   },
 };
 

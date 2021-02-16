@@ -20,8 +20,6 @@ module.exports = {
     'react',
   ],
   rules: {
-    'no-return-assign': 'off',
-    'no-param-reassign': 'off',
     'guard-for-in': 'off',
     'import/no-named-as-default': 'off',
     'no-console': 'warn',

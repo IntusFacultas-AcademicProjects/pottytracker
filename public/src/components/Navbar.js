@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -23,12 +23,13 @@ export const NavbarItem = styled.li`
 `;
 export const StyledIcon = styled(FontAwesomeIcon)``;
 export const NavbarLink = styled(Link)`
+    ${({ theme }) => css`
+        ${theme.text.emphasizedText};
+    `}
     text-decoration: none;
     display: flex;
     align-items: center;
     color: palevioletred;
-    font-weight: 500;
-    font-size: 18px;
     &:hover {
         color: palevioletred;
         text-decoration: none;
@@ -48,7 +49,9 @@ export const NavbarBrand = styled(Link)`
     display: flex;
     align-items: center;
     color: palevioletred;
-    font-size: 24px;
+    ${({ theme }) => css`
+        ${theme.text.titleText}
+    `}
     .navbar__brand__icon {
         height: 30px;
         margin-right: .25em;
