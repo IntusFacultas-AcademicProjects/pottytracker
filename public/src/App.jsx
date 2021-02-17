@@ -1,18 +1,17 @@
 import React from 'react';
-import { ThemeProvider } from 'styled-components';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
 } from 'react-router-dom';
-import theme from './theme';
+import PottyThemeProvider from './theme';
 import FormView from './views/FormView';
 import { ToastManager } from './components/ToastManager';
 import PageLayout from './components/PageLayout';
 
 const App = () => (
   <Router>
-    <ThemeProvider theme={theme}>
+    <PottyThemeProvider>
       <PageLayout>
         <ToastManager>
           <Switch>
@@ -22,7 +21,7 @@ const App = () => (
           </Switch>
         </ToastManager>
       </PageLayout>
-    </ThemeProvider>
+    </PottyThemeProvider>
   </Router>
 );
 

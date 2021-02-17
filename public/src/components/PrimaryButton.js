@@ -6,16 +6,17 @@ export const PrimaryButton = styled.button`
     ${theme.button.defaultStyling}
     &:focus {
       outline: 0;
-      box-shadow: ${theme.button.boxShadowSizes} #a9c1fc;
+      ${theme.mixins.buttonBoxShadow(theme.flavors.primaryHover)}
+    }
+    ${theme.mixins.transition(['background-color', '.2s', 'ease-in'], ['box-shadow', '.2s', 'ease-in'])}
+    border-color: ${theme.flavors.primary};
+    background-color: ${theme.flavors.primary};
+    color: ${theme.flavors.background};
+    &:hover {
+      background-color: ${theme.flavors.primaryHover};
     }
   `}
-  border-color: #586994;
-  background-color: #586994;
-  color: white;
-  transition: background-color .2s ease-in, box-shadow .2s ease-in;
-  &:hover {
-    background-color: #2e3c61;
-  }
+  
 `;
 
 export default PrimaryButton;

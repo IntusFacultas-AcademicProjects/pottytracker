@@ -9,15 +9,16 @@ import {
   NavbarItem,
   NavbarLink,
 } from './Navbar';
+import IconographicLabel from './IconographicLabel';
 
 const PageSkeleton = styled.div`
-    display: flex;
-    flex-direction: column;
-    font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  font-family: sans-serif;
 `;
 
 const MainContent = styled.div`
-    flex: 1;
+  flex: 1;
 `;
 
 export const PageLayout = ({ children }) => (
@@ -25,13 +26,17 @@ export const PageLayout = ({ children }) => (
     <Navbar className="navbar">
       <NavbarBrand to="/">
         <FontAwesomeIcon className="navbar__brand__icon" icon={faToilet} size="lg" />
-        Potty Tracker
+        <IconographicLabel>
+          Potty Tracker
+        </IconographicLabel>
       </NavbarBrand>
       <NavbarItemList>
         <NavbarItem>
           <NavbarLink to="/calendar">
+            <IconographicLabel>
+              Calendar
+            </IconographicLabel>
             <FontAwesomeIcon icon={faCalendarAlt} size="sm" />
-            Calendar
           </NavbarLink>
         </NavbarItem>
       </NavbarItemList>

@@ -3,21 +3,33 @@ import { PropTypes } from 'prop-types';
 import styled, { css } from 'styled-components';
 
 const StyledLabel = styled.label`
-  ${({ theme }) => css`
+  ${({ theme, checked, disabled }) => css`
     ${theme.text.contentText}
     ${theme.button.defaultStyling}
+    border-radius: ${theme.borderRadius};
     &:focus-within {
-      box-shadow: ${theme.button.boxShadowSizes} rgba(219, 112, 147, 0.7);
+      ${theme.mixins.buttonBoxShadow(theme.flavors.secondaryHover)};
     }
     & path {
       transition: fill ${theme.button.transitionTiming} ease-in;
-      fill: palevioletred;
+      fill: ${theme.flavors.secondary};
     }
-    transition: background-color ${theme.button.transitionTiming} ease-in, color ${theme.button.transitionTiming} ease-in, box-shadow ${theme.button.transitionTiming} ease-in;
+    ${theme.mixins.transition(['background-color', theme.button.transitionTiming, 'ease-in'], ['color', theme.button.transitionTiming, 'ease-in'], ['box-shadow', theme.button.transitionTiming, 'ease-in'])}
+    background-color: ${theme.flavors.background};
+    border-color: ${theme.flavors.secondary};  
+    color: ${theme.flavors.secondary};
+
+    ${checked ? css`
+      background-color: ${theme.flavors.secondary};
+      color: ${theme.flavors.background};
+      & path {
+        fill: ${theme.flavors.background};
+      }
+    ` : ''}
+    ${disabled ? css`
+      opacity: .6;
+    ` : ''}
   `}
-  background-color: white;
-  border-color: palevioletred;  
-  color: palevioletred;
   & input {
     -webkit-appearance: none;
     opacity: 0;
@@ -37,18 +49,6 @@ const StyledLabel = styled.label`
   & input:disabled {
     cursor: not-allowed;
   }
-  ${({ checked, disabled }) => css`
-    ${checked ? css`
-      background-color: palevioletred;
-      color: white;
-      & path {
-        fill: white;
-      }
-    ` : ''}
-    ${disabled ? css`
-      opacity: .6;
-    ` : ''}
-  `}
 `;
 
 export const CheckboxButton = ({

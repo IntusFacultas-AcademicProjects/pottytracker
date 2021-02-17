@@ -1,25 +1,12 @@
 import React, {
-  useState, useRef, useContext, useCallback, useMemo,
+  useState, useRef, useContext, useEffect, useCallback, useMemo,
 } from 'react';
-// import * as React from 'react';
 import { PropTypes } from 'prop-types';
 import styled, { css } from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCheckCircle, faExclamationTriangle, faTimes,
 } from '@fortawesome/free-solid-svg-icons';
-
-const getCSSForFlavor = (flavor) => {
-  const flavors = {
-    success: css`
-      background-color: #386C0B;
-    `,
-    error: css`
-      background-color: #EF6F6C;
-    `,
-  };
-  return flavors[flavor];
-};
 
 export const ToastContext = React.createContext();
 const ToastRack = styled.div`
@@ -35,16 +22,18 @@ const ToastRack = styled.div`
 
 const StyledToastBanner = styled.div`
   margin-left: -1px;
-  border-radius: .25em 0 0 .25em;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 25px;
-  & path {
-    fill: white;
-  }
   padding: .25em .5em;
-  ${(props) => getCSSForFlavor(props.flavor)}
+  ${({ flavor, theme }) => css`
+    border-radius: ${theme.borderRadius} 0 0 ${theme.borderRadius};
+    & path {
+      fill: ${theme.flavors.background};
+    }
+    background-color: ${theme.flavors[flavor]}
+  `}
 `;
 const StyledToastContent = styled.div`
   padding: .5em 1em;
@@ -52,55 +41,30 @@ const StyledToastContent = styled.div`
 `;
 const StyledToastCancel = styled.div`
   display: flex;
+  ${({ theme }) => css`
+    & path {
+      fill: ${theme.flavors.toastBlue};
+    }
+  `}
   padding: .25em .5em;
-  & path {
-    fill: #54457F;
-  }
   align-items: center;
 `;
 const StyledToast = styled.div`
-  @keyframes styledtoast {
-    0% {
-      transform: translateY(20px)
-    }
-    100% {
-      transform: translateY(0px)
-    }
-  }
-  @keyframes cancelled {
-    0% {
-      transform: translateX(0px);
-    }
-    90% {
-      transform: translateX(0px);
-    }
-    100% {
-      transform: translateX(300px);
-    }
-  }
-    @keyframes immediatecancel {
-    0% {
-      transform: translateX(0px);
-    }
-    100% {
-      transform: translateX(300px);
-    }
-  }
   display: flex;
-  border: 1px solid #54457F;
   width: 100%;
   cursor: pointer;
-  animation: styledtoast .3s ease-out, cancelled 4.5s ease-out .3s;
+  ${({ theme, cancel }) => css`
+    border: 1px solid ${theme.flavors.toastBlue};
+    animation: ${theme.animations.styledtoast} .3s ease-out, ${theme.animations.cancelled} 4.5s ease-out .3s;
+    ${cancel ? css`animation: ${theme.animations.immediatecancel} .35s ease-out;` : ''}
+    background-color: ${theme.flavors.background};
+    border-radius: ${theme.borderRadius};
+  `}
   animation-fill-mode: forwards;  
-  border-radius: .25em;
-  background-color: white;
   box-shadow: 0px 4px 3px 3px rgba(0,0,0, .1);
   & + & {
     margin-top: 1em;
   }
-  ${({ cancel }) => css`
-    ${cancel ? css`animation: immediatecancel .35s ease-out;` : ''}
-  `}
 `;
 
 export const ToastAlert = ({ children, flavor, id }) => {
@@ -110,6 +74,9 @@ export const ToastAlert = ({ children, flavor, id }) => {
     [flavors.error]: <FontAwesomeIcon icon={faExclamationTriangle} />,
   }), [flavors]);
   const [cancel, setCancel] = useState(false);
+  useEffect(() => () => {
+    setCancel(true);
+  }, []);
   const handleClick = () => {
     setCancel(true);
     manuallyCancel(id);

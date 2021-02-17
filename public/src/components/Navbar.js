@@ -25,46 +25,36 @@ export const StyledIcon = styled(FontAwesomeIcon)``;
 export const NavbarLink = styled(Link)`
     ${({ theme }) => css`
         ${theme.text.emphasizedText};
+        color: ${theme.flavors.secondary};
+        &:hover {
+            color: ${theme.flavors.secondary};
+            text-decoration: none;
+        }
+        & path  {
+            fill: ${theme.flavors.secondary}
+        }
+        &:visited {
+            color: ${theme.flavors.secondary};
+        }
     `}
     text-decoration: none;
     display: flex;
     align-items: center;
-    color: palevioletred;
-    &:hover {
-        color: palevioletred;
-        text-decoration: none;
-    }
-    & svg {
-        margin: 0 .25em;
-    }
-    & path  {
-        fill: palevioletred
-    }
-    &:visited {
-        color: palevioletred;
-    }
 `;
 export const NavbarBrand = styled(Link)`
     text-decoration: none;
     display: flex;
     align-items: center;
-    color: palevioletred;
     ${({ theme }) => css`
         ${theme.text.titleText}
-    `}
-    .navbar__brand__icon {
-        height: 30px;
-        margin-right: .25em;
-        & path  {
-            fill: palevioletred
+        color: ${theme.flavors.secondary};
+        &:hover {
+            color: ${theme.flavors.secondary};
+            text-decoration: none;
         }
-    }
-    &:hover {
-        color: palevioletred;
-        text-decoration: none;
-    }
-    &:visited {
-        color: palevioletred;
-    }
+        &:visited {
+            color: ${theme.flavors.secondary};
+        }
+    `}
 `;
 export default Navbar;
