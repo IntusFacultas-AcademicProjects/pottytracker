@@ -11,6 +11,7 @@ import { ButtonGroup } from '../components/ButtonGroup';
 import { API } from '../hooks';
 import { ReactComponent as AccidentIcon } from '../assets/accident.svg';
 import { IconographicLabel } from '../components/IconographicLabel';
+import { ComposableInput, StyledInput } from '../components/ComposableInput';
 
 export const FormView = () => {
   const [pee, onPee] = useState(false);
@@ -18,6 +19,7 @@ export const FormView = () => {
   const [accident, onAccident] = useState(false);
   const [sleep, onNapStarted] = useState(false);
   const [awoke, onNapEnded] = useState(false);
+  const [datetime, setDateTime] = useState(new Date());
 
   const { toast, flavors } = React.useContext(ToastContext);
 
@@ -29,7 +31,7 @@ export const FormView = () => {
       accident,
       sleep,
       awoke,
-      datetime: new Date().toISOString(),
+      datetime,
     };
     try {
       await API.submit(postData);
@@ -43,9 +45,25 @@ export const FormView = () => {
       toast('Submission failed. Server error.', flavors.error);
     }
   };
+  const formatDate = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}T${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+  const handleDateTimeInput = (e) => {
+    if (!e.target.validity.valid) return;
+    const [date, time] = e.target.value.split('T');
+    const [year, month, day] = date.split('-');
+    const [hour, minutes] = time.split(':');
+    const dt = new Date(year, month, day, hour, minutes);
+    setDateTime(dt);
+  };
 
   return (
     <PottyForm>
+      <ComposableInput
+        label="Date and Time"
+        name="DateAndTime"
+        input={
+          <StyledInput id="DateAndTime" type="datetime-local" value={formatDate(datetime)} onChange={handleDateTimeInput} />
+        }
+      />
       <ButtonGroup>
         <CheckboxButton label="Pee" name="Pee" checked={pee} onChange={() => onPee(!pee)}>
           <IconographicLabel>

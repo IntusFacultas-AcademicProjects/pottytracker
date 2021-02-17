@@ -4,6 +4,7 @@ import { css, keyframes, ThemeProvider } from 'styled-components';
 
 export const theme = {
   flavors: {
+    input: '#7494e4',
     primary: '#586994',
     primaryHover: '#2e3c61',
     secondary: 'palevioletred',
@@ -30,6 +31,14 @@ export const theme = {
       position: relative;
       border-width: 2px;
       border-style: solid;
+    `,
+  },
+  input: {
+    defaultStyling: css`
+      padding: .25em 1em;
+      width: 100%;
+      box-sizing: border-box;
+      height: 33px;
     `,
   },
   toast: {
@@ -82,6 +91,9 @@ export const theme = {
         transition: ${args.map(([property, timing, transition]) => `${property} ${timing} ${transition}`).join(', ')};
     `,
     buttonBoxShadow: (color) => css`
+      box-shadow: 0px 0px 2px 2px ${color};
+    `,
+    inputBoxShadow: (color) => css`
       box-shadow: 0px 0px 2px 2px ${color};
     `,
   },
