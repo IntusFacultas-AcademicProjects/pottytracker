@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const StyledForm = styled.form`
-  max-width: 250px;
+  ${({ theme }) => css`
+    max-width: ${theme.maxWidth};
+  `}
   display: flex;
   flex-direction: column;
   align-items: center;

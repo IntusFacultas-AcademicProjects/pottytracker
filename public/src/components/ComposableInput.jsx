@@ -14,7 +14,7 @@ export const InputContainer = styled.div`
   width: 100%;
 `;
 export const StyledInput = styled.input`
-  
+  -webkit-appearance: textfield;
   ${({ theme }) => css`
     ${theme.mixins.transition(['box-shadow', '.2s', 'ease-in'])}
     border: 1px solid ${theme.flavors.input};

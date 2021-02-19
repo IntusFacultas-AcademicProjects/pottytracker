@@ -21,6 +21,8 @@ module.exports = {
   ],
   rules: {
     'guard-for-in': 'off',
+    'max-len': ['warn', 120, 2],
+    'react/forbid-prop-types': 'warn',
     'import/no-named-as-default': 'off',
     'no-console': 'warn',
   },

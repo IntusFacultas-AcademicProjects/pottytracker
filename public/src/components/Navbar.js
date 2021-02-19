@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 export const Navbar = styled.nav`
     padding: .25em 1em;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     
 `;
 export const NavbarItemList = styled.ul`

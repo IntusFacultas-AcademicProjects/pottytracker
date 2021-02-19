@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 import PottyThemeProvider from './theme';
 import FormView from './views/FormView';
+import CalendarView from './views/CalendarView';
 import { ToastManager } from './components/ToastManager';
 import PageLayout from './components/PageLayout';
 
@@ -15,6 +16,9 @@ const App = () => (
       <PageLayout>
         <ToastManager>
           <Switch>
+            <Route path="/calendar">
+              <CalendarView />
+            </Route>
             <Route path="/">
               <FormView />
             </Route>

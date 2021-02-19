@@ -11,7 +11,17 @@ class RecordViewSet(viewsets.ModelViewSet):
     serializer_class = RecordSerializer
 
     def get_queryset(self):
-        return Record.objects.all()
+        print(self.request.query_params)
+        queryset = Record.objects.all()
+        if not self.request.query_params:
+            return queryset
+        if 'datetime__gte' in self.request.query_params:
+            queryset = queryset.filter(
+                datetime__gte=self.request.query_params.get('datetime__gte'))
+        if 'datetime__lte' in self.request.query_params:
+            queryset = queryset.filter(
+                datetime__lte=self.request.query_params.get('datetime__lte'))
+        return queryset
 
     def retrieve(self, request, pk=None):
         queryset = Record.objects.all()

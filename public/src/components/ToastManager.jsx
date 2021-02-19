@@ -1,5 +1,5 @@
 import React, {
-  useState, useRef, useContext, useEffect, useCallback, useMemo,
+  useState, useRef, useContext, useEffect, useMemo,
 } from 'react';
 import { PropTypes } from 'prop-types';
 import styled, { css } from 'styled-components';

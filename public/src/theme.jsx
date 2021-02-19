@@ -13,6 +13,8 @@ export const theme = {
     success: '#386C0B',
     error: '#EF6F6C',
     toastBlue: '#54457F',
+    accident: '#DC8E30',
+    record: '#7E95A3',
   },
   borderRadius: '.25em',
   button: {
@@ -31,8 +33,14 @@ export const theme = {
       position: relative;
       border-width: 2px;
       border-style: solid;
+
+      &:disabled {
+        opacity: .7;
+        cursor: not-allowed;
+      }
     `,
   },
+  maxWidth: '350px',
   input: {
     defaultStyling: css`
       padding: .25em 1em;
@@ -42,7 +50,7 @@ export const theme = {
     `,
   },
   toast: {
-    width: '250px',
+    width: '350px',
   },
   text: {
     contentText: css`
@@ -74,7 +82,7 @@ export const theme = {
         transform: translateX(0px);
       }
       100% {
-        transform: translateX(300px);
+        transform: translateX(400px);
       }
     `,
     immediatecancel: keyframes`
@@ -82,7 +90,7 @@ export const theme = {
         transform: translateX(0px);
       }
       100% {
-        transform: translateX(300px);
+        transform: translateX(400px);
       }
     `,
   },

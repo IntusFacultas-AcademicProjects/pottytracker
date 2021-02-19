@@ -7,11 +7,13 @@ import { PottyForm } from '../components/PottyForm';
 import { CheckboxButton } from '../components/CheckboxButton';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { ToastContext } from '../components/ToastManager';
-import { ButtonGroup } from '../components/ButtonGroup';
+// import { ButtonGroup } from '../components/ButtonGroup';
+import ButtonGroup from '../components/ButtonGroup';
 import { API } from '../hooks';
 import { ReactComponent as AccidentIcon } from '../assets/accident.svg';
 import { IconographicLabel } from '../components/IconographicLabel';
 import { ComposableInput, StyledInput } from '../components/ComposableInput';
+import { formatDate } from '../utils';
 
 export const FormView = () => {
   const [pee, onPee] = useState(false);
@@ -31,7 +33,7 @@ export const FormView = () => {
       accident,
       sleep,
       awoke,
-      datetime,
+      datetime: formatDate(datetime).replace('T', ' '),
     };
     try {
       await API.submit(postData);
@@ -40,18 +42,20 @@ export const FormView = () => {
       onAccident(false);
       onNapStarted(false);
       onNapEnded(false);
+      setDateTime(new Date());
       toast('Submitted successfully', flavors.success);
     } catch (error) {
       toast('Submission failed. Server error.', flavors.error);
     }
   };
-  const formatDate = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}T${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
   const handleDateTimeInput = (e) => {
     if (!e.target.validity.valid) return;
     const [date, time] = e.target.value.split('T');
     const [year, month, day] = date.split('-');
     const [hour, minutes] = time.split(':');
-    const dt = new Date(year, month, day, hour, minutes);
+    const dt = new Date(
+      Number(year), Number(month) - 1, Number(day), Number(hour), Number(minutes),
+    );
     setDateTime(dt);
   };
 
@@ -60,9 +64,14 @@ export const FormView = () => {
       <ComposableInput
         label="Date and Time"
         name="DateAndTime"
-        input={
-          <StyledInput id="DateAndTime" type="datetime-local" value={formatDate(datetime)} onChange={handleDateTimeInput} />
-        }
+        input={(
+          <StyledInput
+            id="DateAndTime"
+            type="datetime-local"
+            value={formatDate(datetime)}
+            onChange={handleDateTimeInput}
+          />
+        )}
       />
       <ButtonGroup>
         <CheckboxButton label="Pee" name="Pee" checked={pee} onChange={() => onPee(!pee)}>
@@ -107,7 +116,13 @@ export const FormView = () => {
           </IconographicLabel>
           <FontAwesomeIcon icon={faSun} />
         </CheckboxButton>
-        <PrimaryButton role="button" onClick={submit}>Submit</PrimaryButton>
+        <PrimaryButton
+          disabled={!pee && !poo && !accident && !sleep && !awoke}
+          role="button"
+          onClick={submit}
+        >
+          Submit
+        </PrimaryButton>
       </ButtonGroup>
     </PottyForm>
   );

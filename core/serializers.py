@@ -12,5 +12,6 @@ class RecordSerializer(serializers.ModelSerializer):
             "pee",
             "poo",
             "sleep",
+            'accident',
             "awoke",
         )
