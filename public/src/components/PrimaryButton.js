@@ -10,6 +10,7 @@ export const PrimaryButton = styled.button`
     }
     ${theme.mixins.transition(['background-color', '.2s', 'ease-in'], ['box-shadow', '.2s', 'ease-in'])}
     border-color: ${theme.flavors.primary};
+    border-radius: ${theme.borderRadius};
     background-color: ${theme.flavors.primary};
     color: ${theme.flavors.background};
     &:hover {

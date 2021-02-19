@@ -5,12 +5,15 @@ import styled, { css } from 'styled-components';
 import {
   faTint, faPoop, faBed, faSun, faSpinner,
 } from '@fortawesome/free-solid-svg-icons';
+import { formatDateForDisplay } from '../utils';
 
 export const StyledRecord = styled.div`
   ${({ theme, accident }) => css`
     border-radius: ${theme.borderRadius};
     background-color: ${accident ? theme.flavors.accident : theme.flavors.record};
     display: flex;
+    width: 100%;
+    box-sizing: border-box;
     flex-direction: column;
     padding: .5em 1em;
     color: ${theme.flavors.background};
@@ -38,10 +41,10 @@ export const Record = ({ data }) => {
   if (typeof data === 'undefined') {
     return (<FontAwesomeIcon icon={faSpinner} spin />);
   }
-  const formatDate = (date) => date.substring(0, 16).replace('T', ' ');
+
   return (
     <StyledRecord accident={data.accident ? 1 : 0}>
-      {formatDate(data.datetime)}
+      {formatDateForDisplay(data.datetime)}
       <RecordIconRack>
         <RecordFAIcon icon={faTint} active={data.pee ? 1 : 0} />
         <RecordFAIcon icon={faPoop} active={data.poo ? 1 : 0} />

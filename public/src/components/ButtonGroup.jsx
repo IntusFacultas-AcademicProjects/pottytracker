@@ -11,19 +11,11 @@ const StyledButtonGroup = styled.div`
     label  + label {
       border-radius: 0;
     }
-    button:first-child {
+    & button:first-child, & label:first-child {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }
-    label:first-child {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-    & > button:last-of-type {
-      border-top-right-radius: ${theme.borderRadius};
-      border-bottom-right-radius: ${theme.borderRadius};
-    }
-    & > label:last-of-type {
+    & > button:last-of-type, & > label:last-of-type {
       border-top-right-radius: ${theme.borderRadius};
       border-bottom-right-radius: ${theme.borderRadius};
     }
@@ -40,13 +32,13 @@ const StyledButtonGroup = styled.div`
   width: 100%;
 `;
 
-export const ButtonGroup = ({ children, horizontal }) => (
-  <StyledButtonGroup horizontal={horizontal}>{children}</StyledButtonGroup>);
+/** eslint-disable-next-line */
+export const ButtonGroup = (props) => <StyledButtonGroup {...props} />;
 
-ButtonGroup.propTypes = {
-  children: PropTypes.node.isRequired,
-  horizontal: PropTypes.bool,
-};
+// ButtonGroup.propTypes = {
+//   children: PropTypes.node.isRequired,
+//   horizontal: PropTypes.bool,
+// };
 ButtonGroup.defaultProps = {
   horizontal: false,
 };

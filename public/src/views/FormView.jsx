@@ -7,13 +7,12 @@ import { PottyForm } from '../components/PottyForm';
 import { CheckboxButton } from '../components/CheckboxButton';
 import { PrimaryButton } from '../components/PrimaryButton';
 import { ToastContext } from '../components/ToastManager';
-// import { ButtonGroup } from '../components/ButtonGroup';
 import ButtonGroup from '../components/ButtonGroup';
 import { API } from '../hooks';
 import { ReactComponent as AccidentIcon } from '../assets/accident.svg';
 import { IconographicLabel } from '../components/IconographicLabel';
 import { ComposableInput, StyledInput } from '../components/ComposableInput';
-import { formatDate } from '../utils';
+import { formatDate, formatDateForDisplay } from '../utils';
 
 export const FormView = () => {
   const [pee, onPee] = useState(false);
@@ -33,7 +32,7 @@ export const FormView = () => {
       accident,
       sleep,
       awoke,
-      datetime: formatDate(datetime).replace('T', ' '),
+      datetime: formatDateForDisplay(datetime),
     };
     try {
       await API.submit(postData);
@@ -53,10 +52,10 @@ export const FormView = () => {
     const [date, time] = e.target.value.split('T');
     const [year, month, day] = date.split('-');
     const [hour, minutes] = time.split(':');
-    const dt = new Date(
+    const newDate = new Date(
       Number(year), Number(month) - 1, Number(day), Number(hour), Number(minutes),
     );
-    setDateTime(dt);
+    setDateTime(newDate);
   };
 
   return (
@@ -117,7 +116,7 @@ export const FormView = () => {
           <FontAwesomeIcon icon={faSun} />
         </CheckboxButton>
         <PrimaryButton
-          disabled={!pee && !poo && !accident && !sleep && !awoke}
+          disabled={![pee, poo, accident, sleep, awoke].some((value) => value)}
           role="button"
           onClick={submit}
         >

@@ -12,6 +12,9 @@ export const DayContainer = styled.div`
     margin-top: .25em;
   }
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin: .25em 0;
 `;
 export const DaysContainer = styled.div`
@@ -27,6 +30,7 @@ export const DaysContainer = styled.div`
 export const Day = ({ records }) => (
   <DayContainer>
     {records.map((record) => <Record key={record.id} data={record} />)}
+    {records.length === 0 && <b>No records available today.</b>}
   </DayContainer>
 );
 
