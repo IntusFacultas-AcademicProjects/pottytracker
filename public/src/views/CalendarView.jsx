@@ -9,9 +9,6 @@ import { formatDate } from '../utils';
 import Day, { DaysContainer } from '../components/Day';
 
 const CalendarContainer = styled.div`
-  /* ${({ theme }) => css`
-    max-width: ${theme.maxWidth};
-  `} */
   display: flex;
   flex-direction: column;
   align-items: center;
