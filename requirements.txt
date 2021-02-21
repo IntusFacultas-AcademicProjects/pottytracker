@@ -6,3 +6,4 @@ environ
 django-environ
 django-heroku
 django-cors-headers
+gunicorn
