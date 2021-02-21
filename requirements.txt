@@ -3,3 +3,6 @@ autopep8
 django
 djangorestframework
 environ
+django-environ
+django-heroku
+django-cors-headers

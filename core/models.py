@@ -6,6 +6,7 @@ from django.utils import timezone
 class Record(models.Model):
     pee = models.BooleanField("Went Pee", default=False)
     poo = models.BooleanField("Went Poo", default=False)
+    diarrhea = models.BooleanField("Had Diarrhead", default=False)
     sleep = models.BooleanField("Went to Sleep", default=False)
     awoke = models.BooleanField("Woke Up", default=False)
     accident = models.BooleanField("Accident", default=False)

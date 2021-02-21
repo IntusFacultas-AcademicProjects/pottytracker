@@ -2,9 +2,16 @@ from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
+from django.views import View
+from django.shortcuts import render
 from .models import Record
 from .serializers import RecordSerializer
 # Create your views here.
+
+
+class App(View):
+    def get(self, request):
+        return render(request, "build/index.html", {})
 
 
 class RecordViewSet(viewsets.ModelViewSet):

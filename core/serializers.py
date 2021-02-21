@@ -11,6 +11,7 @@ class RecordSerializer(serializers.ModelSerializer):
             "datetime",
             "pee",
             "poo",
+            "diarrhea",
             "sleep",
             'accident',
             "awoke",
