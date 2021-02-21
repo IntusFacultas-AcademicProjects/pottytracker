@@ -8,7 +8,7 @@ router.register(r"records", RecordViewSet, basename="records")
 
 # urls = []
 urlpatterns = [
-    path("/calendar", App.as_view(), name="app"),
+    path("calendar", App.as_view(), name="app"),
     path("", App.as_view(), name="app"),
     path("", include(router.urls))
 ]
