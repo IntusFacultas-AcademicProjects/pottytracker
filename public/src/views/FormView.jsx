@@ -17,19 +17,24 @@ import { formatDate, formatDateForDisplay } from '../utils';
 export const FormView = () => {
   const [pee, onPee] = useState(false);
   const [poo, onPoop] = useState(false);
+  const [diarrhea, onDiarrhea] = useState(false);
   const [accident, onAccident] = useState(false);
   const [sleep, onNapStarted] = useState(false);
   const [awoke, onNapEnded] = useState(false);
   const [datetime, setDateTime] = useState(new Date());
 
   const { toast, flavors } = React.useContext(ToastContext);
-
+  const testToasts = (e) => {
+    e.preventDefault();
+    toast('Test Toast', flavors.success);
+  };
   const submit = async (e) => {
     e.preventDefault();
     const postData = {
       pee,
       poo,
       accident,
+      diarrhea,
       sleep,
       awoke,
       datetime: formatDateForDisplay(datetime),
@@ -38,6 +43,7 @@ export const FormView = () => {
       await API.submit(postData);
       onPee(false);
       onPoop(false);
+      onDiarrhea(false);
       onAccident(false);
       onNapStarted(false);
       onNapEnded(false);
@@ -85,6 +91,17 @@ export const FormView = () => {
           </IconographicLabel>
           <FontAwesomeIcon icon={faPoop} />
         </CheckboxButton>
+        <CheckboxButton
+          label="Diarrhea"
+          name="Diarrhea"
+          checked={diarrhea}
+          onChange={() => { onPoop(!diarrhea ? true : poo); onDiarrhea(!diarrhea); }}
+        >
+          <IconographicLabel>
+            Had Diarrhea
+          </IconographicLabel>
+          <FontAwesomeIcon icon={faPoop} />
+        </CheckboxButton>
         <CheckboxButton label="Accident" name="Accident" checked={accident} onChange={() => onAccident(!accident)}>
           <IconographicLabel>
             Was Accident
@@ -116,7 +133,7 @@ export const FormView = () => {
           <FontAwesomeIcon icon={faSun} />
         </CheckboxButton>
         <PrimaryButton
-          disabled={![pee, poo, accident, sleep, awoke].some((value) => value)}
+          disabled={![pee, poo, accident, sleep, awoke, diarrhea].some((value) => value)}
           role="button"
           onClick={submit}
         >

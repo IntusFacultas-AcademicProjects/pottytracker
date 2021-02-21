@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-import Record, { StyledRecord } from './Record';
+import Record, { StyledRecord, RecordShape } from './Record';
 
 export const DayContainer = styled.div`
   ${({ theme }) => css`
@@ -35,7 +35,9 @@ export const Day = ({ records }) => (
 );
 
 Day.propTypes = {
-  records: PropTypes.array.isRequired,
+  records: PropTypes.arrayOf(
+    PropTypes.shape(RecordShape),
+  ).isRequired,
 };
 
 export default Day;

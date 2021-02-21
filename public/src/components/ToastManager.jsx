@@ -9,7 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 export const ToastContext = React.createContext();
-const ToastRack = styled.div`
+const StyledToastRack = styled.div`
   z-index: 1;
   position: fixed;
   right: 0;
@@ -106,50 +106,66 @@ ToastAlert.propTypes = {
   id: PropTypes.number.isRequired,
 };
 
+export const ToastRack = ({ toasts }) => (
+  <StyledToastRack>
+    {
+      toasts.map((toast) => (
+        <ToastAlert key={toast.id} id={toast.id} flavor={toast.flavor}>
+          {toast.message}
+        </ToastAlert>
+      ))
+    }
+  </StyledToastRack>
+);
+ToastRack.propTypes = {
+  toasts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      flavor: PropTypes.string.isRequired,
+      message: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+};
+
 export const ToastManager = ({ children, defaultTime }) => {
   const toasts = useRef([]);
   const [availableToastId, setAvailableToastId] = useState(0);
   const [forceRerender, setForceRerender] = useState(0);
+
+  const internalToast = (message, flavor, time) => {
+    const usedId = availableToastId;
+    toasts.current = [...toasts.current, {
+      message, flavor, time, id: usedId,
+    }];
+
+    setAvailableToastId(availableToastId + 1);
+    setTimeout(() => {
+      toasts.current.splice(0, 1);
+      setForceRerender(toasts.current.length);
+    }, time ?? defaultTime);
+  };
+  const internalManualCancel = (id) => {
+    setTimeout(
+      () => {
+        toasts.current = toasts.current.filter((toast) => toast.id !== id);
+        setForceRerender(toasts.current.length);
+      },
+      300,
+    );
+  };
 
   const contextData = {
     flavors: {
       success: 'success',
       error: 'error',
     },
-    toast(message, flavor, time) {
-      const usedId = availableToastId;
-      toasts.current = [...toasts.current, {
-        message, flavor, time, id: usedId,
-      }];
-
-      setAvailableToastId(availableToastId + 1);
-      setTimeout(() => {
-        toasts.current.splice(0, 1);
-        setForceRerender(toasts.current.length);
-      }, time ?? defaultTime);
-    },
-    manuallyCancel(id) {
-      setTimeout(
-        () => {
-          toasts.current = toasts.current.filter((toast) => toast.id !== id);
-          setForceRerender(toasts.current.length);
-        },
-        300,
-      );
-    },
+    toast: internalToast,
+    manuallyCancel: internalManualCancel,
   };
   return (
     <ToastContext.Provider value={contextData}>
       {children}
-      <ToastRack>
-        {
-          toasts.current.map((toast) => (
-            <ToastAlert key={toast.id} id={toast.id} flavor={toast.flavor}>
-              {toast.message}
-            </ToastAlert>
-          ))
-        }
-      </ToastRack>
+      <ToastRack toasts={toasts.current} />
     </ToastContext.Provider>
   );
 };

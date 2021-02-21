@@ -53,6 +53,7 @@ export const CalendarView = () => {
     );
     const groupByDate = (ajaxData) => {
       const groupedObj = ajaxData.reduce((acc, cur) => {
+        /* eslint-disable-next-line no-unused-vars */
         const [date, time] = cur.datetime.split('T');
         Array.isArray(acc[date]) ? acc[date].push(cur) : acc[date] = [cur];
         return acc;
@@ -66,9 +67,11 @@ export const CalendarView = () => {
     const groupedData = groupByDate(response);
     setData(groupedData);
   };
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     day ? retrieveDate() : retrieveWeek();
   }, [day, shownDate]);
+  /* eslint-enable */
   return (
     <CalendarContainer>
       <CalendarFormContainer>

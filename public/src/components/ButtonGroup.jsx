@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 
 const StyledButtonGroup = styled.div`
@@ -27,20 +27,18 @@ const StyledButtonGroup = styled.div`
   label + button {
     margin-top: .5em;
   }
+  button + button {
+    margin-top: .5em;
+  }
  `)}
   display: flex;
   width: 100%;
 `;
 
-/** eslint-disable-next-line */
-export const ButtonGroup = (props) => <StyledButtonGroup {...props} />;
-
-// ButtonGroup.propTypes = {
-//   children: PropTypes.node.isRequired,
-//   horizontal: PropTypes.bool,
-// };
-ButtonGroup.defaultProps = {
-  horizontal: false,
-};
+/* eslint-disable react/jsx-props-no-spreading */
+export const ButtonGroup = (props) => (
+  <StyledButtonGroup {...props} />
+);
+/* eslint-enable */
 
 export default ButtonGroup;

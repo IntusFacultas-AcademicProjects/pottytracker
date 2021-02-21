@@ -1,7 +1,7 @@
 import { React } from 'react';
 import { PropTypes } from 'prop-types';
 import styled, { css } from 'styled-components';
-
+/* eslint-disable max-len */
 const StyledLabel = styled.label`
   ${({ theme, checked, disabled }) => css`
     ${theme.text.contentText}
@@ -50,7 +50,7 @@ const StyledLabel = styled.label`
     cursor: not-allowed;
   }
 `;
-
+/** eslint-enable */
 export const CheckboxButton = ({
   checked, children, name, onChange, disabled,
 }) => (

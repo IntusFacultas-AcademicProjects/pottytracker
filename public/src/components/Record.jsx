@@ -7,10 +7,24 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { formatDateForDisplay } from '../utils';
 
+export const RecordShape = {
+  accident: PropTypes.bool.isRequired,
+  poo: PropTypes.bool.isRequired,
+  pee: PropTypes.bool.isRequired,
+  sleep: PropTypes.bool.isRequired,
+  awoke: PropTypes.bool.isRequired,
+  datetime: PropTypes.string.isRequired,
+};
+
 export const StyledRecord = styled.div`
-  ${({ theme, accident }) => css`
+  ${({ theme, accident, diarrhea }) => css`
     border-radius: ${theme.borderRadius};
     background-color: ${accident ? theme.flavors.accident : theme.flavors.record};
+    ${diarrhea ? css`
+        border-right-color: #9e522f;
+        border-right-width: 2em;
+        border-right-style: solid;
+      ` : ''}
     display: flex;
     width: 100%;
     box-sizing: border-box;
@@ -43,7 +57,7 @@ export const Record = ({ data }) => {
   }
 
   return (
-    <StyledRecord accident={data.accident ? 1 : 0}>
+    <StyledRecord accident={data.accident ? 1 : 0} diarrhea={data.diarrhea ? 1 : 0}>
       {formatDateForDisplay(data.datetime)}
       <RecordIconRack>
         <RecordFAIcon icon={faTint} active={data.pee ? 1 : 0} />
@@ -55,6 +69,6 @@ export const Record = ({ data }) => {
   );
 };
 Record.propTypes = {
-  data: PropTypes.object.isRequired,
+  data: PropTypes.shape(RecordShape).isRequired,
 };
 export default Record;
