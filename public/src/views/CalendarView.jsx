@@ -1,4 +1,6 @@
-import { React, useEffect, useState } from 'react';
+import {
+  React, useEffect, useState, useContext,
+} from 'react';
 // import { PropTypes } from 'prop-types';
 import styled, { css } from 'styled-components';
 import { ComposableInput, StyledInput } from '../components/ComposableInput';
@@ -6,6 +8,7 @@ import ButtonGroup from '../components/ButtonGroup';
 import CheckboxButton from '../components/CheckboxButton';
 import API from '../hooks';
 import { formatDate } from '../utils';
+import { ToastContext } from '../components/ToastManager';
 import Day, { DaysContainer } from '../components/Day';
 
 const CalendarContainer = styled.div`
@@ -24,10 +27,15 @@ export const CalendarView = () => {
   const [day, setDayOrMonth] = useState(true);
   const [data, setData] = useState([]);
   const [shownDate, setShownDate] = useState(new Date());
+  const { toast, flavors } = useContext(ToastContext);
   const retrieveDate = async () => {
     const date = formatDate(shownDate).substr(0, 10);
-    const response = await API.retrieveEventsForDay(date);
+    const [response, status] = await API.retrieveEventsForDay(date);
+    if (status !== 200) {
+      return toast('Could not retrieve the data.', flavors.error);
+    }
     setData([response]);
+    return true;
   };
   const handleDateTimeInput = (e) => {
     if (!e.target.validity.valid) return;
@@ -47,10 +55,13 @@ export const CalendarView = () => {
       : (() => {
         const a = new Date(); a.setDate(shownDate.getDate() + (END_OF_WEEK - shownDate.getDay())); return a;
       })();
-    const response = await API.retrieveEventsForDuration(
+    const [response, status] = await API.retrieveEventsForDuration(
       formatDate(startOfWeek).substr(0, 10),
       formatDate(endOfWeek).substr(0, 10),
     );
+    if (status !== 200) {
+      return toast('Could not retrieve the data.', flavors.error);
+    }
     const groupByDate = (ajaxData) => {
       const groupedObj = ajaxData.reduce((acc, cur) => {
         /* eslint-disable-next-line no-unused-vars */
@@ -66,11 +77,13 @@ export const CalendarView = () => {
     };
     const groupedData = groupByDate(response);
     setData(groupedData);
+    return true;
   };
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     day ? retrieveDate() : retrieveWeek();
   }, [day, shownDate]);
+  console.log(data);
   /* eslint-enable */
   return (
     <CalendarContainer>

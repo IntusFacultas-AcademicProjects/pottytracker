@@ -24,10 +24,7 @@ export const FormView = () => {
   const [datetime, setDateTime] = useState(new Date());
 
   const { toast, flavors } = React.useContext(ToastContext);
-  const testToasts = (e) => {
-    e.preventDefault();
-    toast('Test Toast', flavors.success);
-  };
+
   const submit = async (e) => {
     e.preventDefault();
     const postData = {
@@ -40,7 +37,10 @@ export const FormView = () => {
       datetime: formatDateForDisplay(datetime),
     };
     try {
-      await API.submit(postData);
+      const [response, status] = await API.submit(postData);
+      if (status !== 200) {
+        return toast('Could not submit the form.', flavors.error);
+      }
       onPee(false);
       onPoop(false);
       onDiarrhea(false);
@@ -49,8 +49,9 @@ export const FormView = () => {
       onNapEnded(false);
       setDateTime(new Date());
       toast('Submitted successfully', flavors.success);
+      return true;
     } catch (error) {
-      toast('Submission failed. Server error.', flavors.error);
+      return toast('Submission failed. Server error.', flavors.error);
     }
   };
   const handleDateTimeInput = (e) => {

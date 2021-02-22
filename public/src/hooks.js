@@ -4,6 +4,7 @@ const axiosConfig = {
   // eslint-disable-next-line no-undef
   baseURL: SERVER_CONFIGURATION.baseUrl,
 };
+const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0]?.value ?? '';
 export const API = {
   axiosInstance: axios.create(axiosConfig),
   // eslint-disable-next-line no-undef
@@ -13,6 +14,7 @@ export const API = {
     mode: 'cors',
     headers: {
       'Content-Type': 'application/json',
+      'X-CSRFToken': csrfToken,
     },
     redirect: 'follow',
     body: JSON.stringify(data),
@@ -28,7 +30,8 @@ export const API = {
       datetime__lte: `${endDate} 23:59`,
     };
     const response = await API.get(API.configureUrl('records/'), data);
-    return response.json();
+    const returnData = await response.json();
+    return [returnData, response.status];
   },
   retrieveEventsForDay: async (day) => {
     const data = {
@@ -36,11 +39,13 @@ export const API = {
       datetime__lte: `${day} 23:59`,
     };
     const response = await API.get(API.configureUrl('records/'), data);
-    return response.json();
+    const returnData = await response.json();
+    return [returnData, response.status];
   },
   submit: async (data) => {
     const response = await API.post(API.configureUrl('records/'), data);
-    return response.json();
+    const returnData = await response.json();
+    return [returnData, response.status];
   },
 };
 
