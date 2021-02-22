@@ -18,7 +18,6 @@ class RecordViewSet(viewsets.ModelViewSet):
     serializer_class = RecordSerializer
 
     def get_queryset(self):
-        print(self.request.query_params)
         queryset = Record.objects.all()
         if not self.request.query_params:
             return queryset
@@ -28,7 +27,7 @@ class RecordViewSet(viewsets.ModelViewSet):
         if 'datetime__lte' in self.request.query_params:
             queryset = queryset.filter(
                 datetime__lte=self.request.query_params.get('datetime__lte'))
-        return queryset
+        return queryset.order_by("datetime")
 
     def retrieve(self, request, pk=None):
         queryset = Record.objects.all()
