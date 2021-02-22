@@ -1,25 +1,32 @@
 import React from 'react';
-
 import {
   BrowserRouter as Router,
   Switch,
   Route,
 } from 'react-router-dom';
+import PottyThemeProvider from './theme';
 import FormView from './views/FormView';
+import CalendarView from './views/CalendarView';
+import { ToastManager } from './components/ToastManager';
 import PageLayout from './components/PageLayout';
 
-function App() {
-  return (
-    <Router>
+const App = () => (
+  <Router>
+    <PottyThemeProvider>
       <PageLayout>
-        <Switch>
-          <Route path="/">
-            <FormView />
-          </Route>
-        </Switch>
+        <ToastManager>
+          <Switch>
+            <Route path="/calendar">
+              <CalendarView />
+            </Route>
+            <Route path="/">
+              <FormView />
+            </Route>
+          </Switch>
+        </ToastManager>
       </PageLayout>
-    </Router>
-  );
-}
+    </PottyThemeProvider>
+  </Router>
+);
 
 export default App;

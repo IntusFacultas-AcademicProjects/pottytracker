@@ -4,22 +4,28 @@ from django.utils import timezone
 
 
 class Record(models.Model):
-    Y = "Y"
-    N = "N"
-    NONE = "None"
-    SELECTION_OPTIONS = (
-        (Y, "Yes"),
-        (N, "No"),
-        (N, "")
-    )
-    pee = models.CharField("Went Pee", blank=True, max_length=12,
-                           null=True, choices=SELECTION_OPTIONS)
-    poo = models.CharField("Went Poo", blank=True, max_length=12,
-                           null=True, choices=SELECTION_OPTIONS)
-    sleep = models.CharField("Went to Sleep", blank=True, max_length=12,
-                             null=True, choices=SELECTION_OPTIONS)
-    awoke = models.CharField("Woke Up", blank=True, max_length=12,
-                             null=True, choices=SELECTION_OPTIONS)
-    accident = models.CharField("Accident", blank=True, max_length=12,
-                                null=True, choices=SELECTION_OPTIONS)
+    pee = models.BooleanField("Went Pee", default=False)
+    poo = models.BooleanField("Went Poo", default=False)
+    diarrhea = models.BooleanField("Had Diarrhead", default=False)
+    sleep = models.BooleanField("Went to Sleep", default=False)
+    awoke = models.BooleanField("Woke Up", default=False)
+    accident = models.BooleanField("Accident", default=False)
     datetime = models.DateTimeField("Datetime", blank=True, null=True)
+
+    def __str__(self):
+        formatted_datetime = self.datetime.strftime('%Y-%m-%d %H:%M')
+        to_string = f"{formatted_datetime} "
+        actions = []
+        if self.pee:
+            actions.append("Peed")
+        if self.poo:
+            actions.append("Pood")
+        if self.diarrhea:
+            actions.append("Diarrhea")
+        if self.sleep:
+            actions.append("Slept")
+        if self.awoke:
+            actions.append("Awoke")
+        if self.accident:
+            actions.append("[ACCIDENT]")
+        return to_string + ", ".join(actions)

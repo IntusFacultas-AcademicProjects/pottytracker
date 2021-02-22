@@ -6,6 +6,8 @@ module.exports = {
   extends: [
     'plugin:react/recommended',
     'airbnb',
+    'react-app',
+    'react-app/jest',
   ],
   parserOptions: {
     ecmaFeatures: {
@@ -18,8 +20,11 @@ module.exports = {
     'react',
   ],
   rules: {
-    'import/no-named-as-default': 0,
-    'no-console': 0,
-    'import/no-extraneous-dependencies': 0,
+    'guard-for-in': 'off',
+    'max-len': ['warn', 120, 2],
+    'react/forbid-prop-types': 'warn',
+    'react/jsx-props-no-spreading': 'warn',
+    'import/no-named-as-default': 'off',
+    'no-console': 'warn',
   },
 };
